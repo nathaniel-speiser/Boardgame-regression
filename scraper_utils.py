@@ -9,7 +9,7 @@ def get_marketplace_data(game_id, print_listings=False):
     Given game id, return list with number of marketplace listings and median price
     """
     ua = UserAgent()
-    user_agent = user_agent = {'User-agent': ua.random}
+    user_agent = {'User-agent': ua.random}
     url = f'https://www.boardgamegeek.com/xmlapi2/thing?id={game_id}&marketplace=1'
     response=requests.get(url, headers = user_agent)
     if response.status_code > 300:
@@ -68,6 +68,12 @@ def make_category_dict():
     top_categories_dict = pd.Series(top_categories['category_name'].values,
                                     index=top_categories['category_id']).to_dict()
     return top_categories_dict
+
+def drop_categories(categories_dict, drop_list):
+    return {code:category for code,category in categories_dict.items() if category not in drop_list}
+
+
+
 
 def code_to_name(categories_dict, code_list):
     """
